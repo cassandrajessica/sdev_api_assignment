@@ -1,41 +1,46 @@
 import express from 'express';
+import sqlite3 from 'sqlite3';
 
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
 
-let products = [];
+// Creating the database
+const db = new sqlite3.Database('products.db');
 
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        price REAL
+        )`);
+})
+
+// ROOT END POINT
 app.get('/', (req, res) => {
     res.send('Welcome!');    
 });
 
+// CREATE PRODUCTS END POINT
 app.post('/create-products', (req, res) => {
     const { name, price } = req.body;
-    const product = {
-        id: Date.now(),
-        name,
-        price
-    } 
+    const sql = 'INSERT INTO products (name,price) VALUES(?, ?)';
 
-    products.push(product);
-
-    console.log('Product created: ',product);
-
-    res.status(201).json({
-        message: 'Succesfully created',
-        product: product
-    })
+    db.run(sql, [name, price], function(err) {
+        if(err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ id: this.lastID, name, price });
+    });
 
 });
 
+// GET ALL PRODUCTS END POINT
 app.get('/get-products', (req, res) => {
-    res.status(200).json({
-        message: 'Sucessfully retrieved all products',
-        products: products,
-    })
-})
+    db.all('SELECT * FROM products', [], (err, rows) => {
+        if(err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`);

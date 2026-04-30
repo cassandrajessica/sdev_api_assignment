@@ -42,31 +42,47 @@ app.get('/', (req, res) => {
     res.send('Welcome!');    
 });
 
-// CREATE PRODUCTS END POINT
+// CREATE ORDERS END POINT
 app.post('/orders', async (req, res) => {
     const { product_id, quantity } = req.body;
-    try{
+    try {
         const productResponse = await fetch(`${PRODUCT_SERVICE_URL}/products/${product_id}`);
 
-        if(!productResponse.ok) {
-            return res.status(404).json({ error: 'Product not found'});
+        if (!productResponse.ok) {
+            return res.status(404).json({ error: 'Product not found' });
         }
 
         const product = await productResponse.json();
-
         const total = product.price * quantity;
 
         const result = await pool.query(
-            'INSERT INTO orders (product_id, product_name, product_price, quantity, total) VALUES($1, $2, $3, $4, $5) RETURNING *', [product_id, product.name, product.price, quantity, total]
+            'INSERT INTO orders (product_id, product_name, product_price, quantity, total) VALUES($1, $2, $3, $4, $5) RETURNING *',
+            [product_id, product.name, product.price, quantity, total]
         );
 
-        res.status(201).json(result.rows[0]);
-    }catch(err) {
+        const order = result.rows[0];
+
+        // Call the Lambda function to log the transaction
+        if (process.env.LAMBDA_URL) {
+            fetch(process.env.LAMBDA_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    order_id: order.id,
+                    product_name: order.product_name,
+                    quantity: order.quantity,
+                    total: order.total
+                })
+            }).catch(err => console.error('Lambda log failed:', err));
+        }
+
+        res.status(201).json(order);
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-// GET ALL PRODUCTS END POINT
+// GET ALL ORDERS END POINT
 app.get('/orders', async (req, res) => {
     try{
         const result = await pool.query('SELECT * FROM orders ORDER BY created_at DESC');

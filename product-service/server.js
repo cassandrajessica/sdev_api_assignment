@@ -61,7 +61,7 @@ app.get('/products', async (req, res) => {
 });
 
 // GET SINGLE PRODUCT 
-app.get('product/:id', async (req, res) => {
+app.get('products/:id', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM products WHERE id = $1', [req.params.id]);
         if(result.rows.length === 0) {

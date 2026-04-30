@@ -1,0 +1,58 @@
+name: Campus Store CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test-product-service:
+    name: Build & Test Product Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./product-service
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./product-service
+        run: npm test
+
+      - name: Build Docker image
+        working-directory: ./product-service
+        run: docker build -t product-service .
+
+  build-and-test-order-service:
+    name: Build & Test Order Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./order-service
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./order-service
+        run: npm test
+
+      - name: Build Docker image
+        working-directory: ./order-service
+        run: docker build -t order-service .

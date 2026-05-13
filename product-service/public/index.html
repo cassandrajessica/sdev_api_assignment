@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Store Online</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #f5f0eb;
+            --bg: #f7f8fa;
             --surface: #ffffff;
-            --primary: #1a3a2a;
-            --accent: #d4a373;
-            --text: #2c2c2c;
-            --text-light: #6b6b6b;
-            --border: #e0d8cf;
-            --success: #2d6a4f;
-            --danger: #c1121f;
-            --radius: 12px;
+            --primary: #111111;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text: #111111;
+            --text-light: #71717a;
+            --border: #e4e4e7;
+            --success: #2563eb;
+            --danger: #ef4444;
+            --radius: 10px;
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
@@ -33,27 +34,15 @@
         header {
             background: var(--primary);
             color: #fff;
-            padding: 1.5rem 2rem;
+            padding: 1.25rem 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
         }
 
         header h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.6rem;
-            letter-spacing: 0.5px;
-        }
-
-        header .badge {
-            background: var(--accent);
-            color: var(--primary);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
         }
 
         /* ── Navigation Tabs ── */
@@ -61,24 +50,24 @@
             display: flex;
             gap: 0;
             background: var(--surface);
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
             padding: 0 2rem;
         }
 
         .tab {
-            padding: 1rem 1.5rem;
+            padding: 0.9rem 1.5rem;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
+            font-size: 0.88rem;
             color: var(--text-light);
-            border-bottom: 3px solid transparent;
+            border-bottom: 2px solid transparent;
             transition: all 0.2s;
             user-select: none;
         }
 
         .tab:hover { color: var(--text); }
         .tab.active {
-            color: var(--primary);
+            color: var(--accent);
             border-bottom-color: var(--accent);
         }
 
@@ -94,10 +83,11 @@
 
         /* ── Section Title ── */
         .section-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
             color: var(--primary);
+            letter-spacing: -0.3px;
         }
 
         /* ── Cards ── */
@@ -113,7 +103,7 @@
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1rem;
+            gap: 0.75rem;
             margin-bottom: 2rem;
         }
 
@@ -121,89 +111,92 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1.5rem;
+            padding: 1.25rem;
             display: flex;
             flex-direction: column;
-            transition: box-shadow 0.2s, transform 0.15s;
+            transition: box-shadow 0.2s, border-color 0.2s;
         }
 
         .product-card:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-
-        .product-card .product-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--primary);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-color: #d1d5db;
         }
 
         .product-card h3 {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.2px;
         }
 
         .product-card .price {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.3rem;
-            color: var(--success);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent);
             margin-bottom: 1rem;
         }
 
         .product-card .order-row {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
             align-items: center;
             margin-top: auto;
         }
 
         .product-card .qty-input {
-            width: 60px;
-            padding: 0.45rem 0.5rem;
+            width: 52px;
+            padding: 0.4rem 0.4rem;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
             text-align: center;
             font-family: inherit;
         }
 
+        .product-card .qty-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
         /* ── Buttons ── */
         .btn {
-            padding: 0.5rem 1.2rem;
+            padding: 0.45rem 1rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s;
         }
 
         .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover { background: var(--accent-hover); }
+
+        .btn-accent {
             background: var(--primary);
             color: #fff;
         }
-        .btn-primary:hover { background: #254f3a; }
-
-        .btn-accent {
-            background: var(--accent);
-            color: var(--primary);
-        }
-        .btn-accent:hover { background: #c4904f; }
+        .btn-accent:hover { background: #333; }
 
         .btn-outline {
             background: transparent;
             border: 1.5px solid var(--border);
-            color: var(--text);
+            color: var(--text-light);
         }
-        .btn-outline:hover { border-color: var(--primary); }
+        .btn-outline:hover { border-color: var(--text); color: var(--text); }
+
+        .btn-delete {
+            background: transparent;
+            border: 1.5px solid var(--danger);
+            color: var(--danger);
+            font-size: 0.78rem;
+            padding: 0.3rem 0.6rem;
+        }
+        .btn-delete:hover { background: var(--danger); color: #fff; }
 
         .btn:disabled {
             opacity: 0.5;
@@ -226,18 +219,18 @@
         }
 
         .form-group label {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             color: var(--text-light);
         }
 
         .form-group input {
-            padding: 0.55rem 0.75rem;
+            padding: 0.5rem 0.75rem;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border-radius: 6px;
+            font-size: 0.92rem;
             font-family: inherit;
             background: #fff;
             transition: border-color 0.15s;
@@ -245,40 +238,40 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--accent);
         }
 
         /* ── Orders Table ── */
         .orders-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
         }
 
         .orders-table th {
             text-align: left;
-            padding: 0.75rem 1rem;
+            padding: 0.7rem 1rem;
             background: var(--primary);
             color: #fff;
-            font-weight: 600;
-            font-size: 0.78rem;
+            font-weight: 500;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
         }
 
         .orders-table th:first-child { border-radius: 8px 0 0 0; }
         .orders-table th:last-child { border-radius: 0 8px 0 0; }
 
         .orders-table td {
-            padding: 0.75rem 1rem;
+            padding: 0.7rem 1rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .orders-table tr:hover td { background: #faf8f5; }
+        .orders-table tr:hover td { background: #fafafa; }
 
         .orders-table .total-cell {
             font-weight: 700;
-            color: var(--success);
+            color: var(--accent);
         }
 
         /* ── Toast Notifications ── */
@@ -295,11 +288,11 @@
         .toast {
             background: var(--primary);
             color: #fff;
-            padding: 0.85rem 1.25rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
             font-weight: 500;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
             animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
             max-width: 340px;
         }
@@ -323,15 +316,15 @@
         }
 
         .empty-state .icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         /* ── Loading Spinner ── */
         .spinner {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border: 2.5px solid rgba(255,255,255,0.3);
             border-top-color: #fff;
             border-radius: 50%;
@@ -344,7 +337,7 @@
         /* ── Stats Bar ── */
         .stats-bar {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
@@ -353,29 +346,28 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1rem 1.5rem;
+            padding: 1rem 1.25rem;
             flex: 1;
             min-width: 140px;
         }
 
         .stat-card .stat-label {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
             color: var(--text-light);
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .stat-card .stat-value {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--primary);
-            margin-top: 0.25rem;
+            margin-top: 0.2rem;
         }
 
         /* ── Responsive ── */
         @media (max-width: 600px) {
-            header { flex-direction: column; gap: 0.5rem; text-align: center; }
             .tabs { padding: 0 1rem; overflow-x: auto; }
             .tab { padding: 0.8rem 1rem; font-size: 0.82rem; white-space: nowrap; }
             .form-row { flex-direction: column; }
@@ -386,8 +378,7 @@
 <body>
 
     <header>
-        <h1>🏫 Campus Store Online</h1>
-        <span class="badge">Cloud Native</span>
+        <h1>Campus Store Online</h1>
     </header>
 
     <div class="tabs">
@@ -440,12 +431,10 @@
 
     <script>
         // ─── Configuration ───
-        // If both services run on the same host, use relative URLs.
-        // If order-service is on a different host/port, update ORDER_API below.
         const PRODUCT_API = '/products';
         const ORDER_API_BASE = window.location.hostname === 'localhost'
             ? 'http://localhost:3002'
-            : ''; // Update this to your order-service URL when deployed
+            : '';
         const ORDER_API = ORDER_API_BASE + '/orders';
 
         // ─── Tab Navigation ───
@@ -470,7 +459,7 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // load products
+        // ─── Load Products ───
         async function loadProducts() {
             try {
                 const res = await fetch(PRODUCT_API);
@@ -492,10 +481,8 @@
                         <div class="price">$${Number(p.price).toFixed(2)}</div>
                         <div class="order-row">
                             <input type="number" class="qty-input" id="qty-${p.id}" value="1" min="1" max="99">
-                            <button class="btn btn-accent" onclick="placeOrder(${p.id}, '${escapeHtml(p.name)}')">
-                                Order
-                            </button>
-                            <button class="btn btn-outline" onclick="deleteProduct(${p.id}, '${escapeHtml(p.name)}')" style="color:var(--danger);border-color:var(--danger);font-size:0.78rem;padding:0.3rem 0.6rem;">✕</button>
+                            <button class="btn btn-accent" onclick="placeOrder(${p.id}, '${escapeHtml(p.name)}')">Order</button>
+                            <button class="btn btn-delete" onclick="deleteProduct(${p.id}, '${escapeHtml(p.name)}')">✕</button>
                         </div>
                     </div>
                 `).join('');
@@ -508,7 +495,7 @@
             }
         }
 
-        //add product
+        // ─── Add Product ───
         document.getElementById('addProductBtn').addEventListener('click', async () => {
             const name = document.getElementById('productName').value.trim();
             const price = parseFloat(document.getElementById('productPrice').value);
@@ -543,7 +530,7 @@
             }
         });
 
-        // place order
+        // ─── Place Order ───
         async function placeOrder(productId, productName) {
             const qtyInput = document.getElementById(`qty-${productId}`);
             const quantity = parseInt(qtyInput.value);
@@ -570,7 +557,7 @@
             }
         }
 
-        // load orders
+        // ─── Load Orders ───
         async function loadOrders() {
             try {
                 const res = await fetch(ORDER_API);
@@ -628,7 +615,7 @@
                                     <td>${o.quantity}</td>
                                     <td class="total-cell">$${Number(o.total).toFixed(2)}</td>
                                     <td>${new Date(o.created_at).toLocaleDateString()}</td>
-                                    <td><button class="btn btn-outline" onclick="deleteOrder(${o.id})" style="color:var(--danger);border-color:var(--danger);font-size:0.78rem;padding:0.3rem 0.8rem;">Delete</button></td>
+                                    <td><button class="btn btn-delete" onclick="deleteOrder(${o.id})">Delete</button></td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -643,9 +630,7 @@
             }
         }
 
-        // utlities 
-
-        // delete order
+        // ─── Delete Order ───
         async function deleteOrder(orderId) {
             if (!confirm('Delete this order?')) return;
             try {
@@ -658,7 +643,7 @@
             }
         }
 
-        // delete product
+        // ─── Delete Product ───
         async function deleteProduct(productId, productName) {
             if (!confirm(`Delete "${productName}" from the store?`)) return;
             try {
@@ -671,6 +656,7 @@
             }
         }
 
+        // ─── Utility ───
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.textContent = str;

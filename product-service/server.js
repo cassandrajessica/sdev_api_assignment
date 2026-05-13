@@ -18,6 +18,18 @@ app.use((req, res, next) => {
     next();
 });
 
+// API Key Authentication Middleware
+const verifyApiKey = (req, res, next) => {
+    if (req.method === 'GET') return next();
+    const apiKey = req.headers['x-api-key'];
+    if (!apiKey || apiKey !== process.env.API_KEY) {
+        return res.status(401).json({ error: 'Unauthorized: Invalid API key' });
+    }
+    next();
+};
+
+app.use(verifyApiKey);
+
 // serve frontend static files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -105,7 +117,10 @@ app.post('/orders', async (req, res) => {
     try {
         const response = await fetch(`${ORDER_SERVICE_URL}/orders`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': req.headers['x-api-key'] || ''
+            },
             body: JSON.stringify(req.body)
         });
         const data = await response.json();
@@ -118,7 +133,8 @@ app.post('/orders', async (req, res) => {
 app.delete('/orders/:id', async (req, res) => {
     try {
         const response = await fetch(`${ORDER_SERVICE_URL}/orders/${req.params.id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: { 'x-api-key': req.headers['x-api-key'] || '' }
         });
         const data = await response.json();
         res.status(response.status).json(data);

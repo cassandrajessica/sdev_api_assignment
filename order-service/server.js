@@ -17,6 +17,18 @@ app.use((req, res, next) => {
     next();
 });
 
+// API Key Authentication Middleware
+const verifyApiKey = (req, res, next) => {
+    if (req.method === 'GET') return next();
+    const apiKey = req.headers['x-api-key'];
+    if (!apiKey || apiKey !== process.env.API_KEY) {
+        return res.status(401).json({ error: 'Unauthorized: Invalid API key' });
+    }
+    next();
+};
+
+app.use(verifyApiKey);
+
 const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3000';
 
 // connecting db

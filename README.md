@@ -6,6 +6,16 @@ A cloud native ecommerce application built with a microservices architecture, de
  
 http://store-balancer-771966180.us-east-2.elb.amazonaws.com
 
+## Architecture
+ 
+- **Product Service** (Port 3000) — Manages products and serves the frontend
+- **Order Service** (Port 3002) — Manages orders, communicates with product service
+- **AWS RDS** — PostgreSQL database for persistent storage
+- **AWS Lambda** — Serverless order logging triggered on each new order
+- **Application Load Balancer** — Distributes traffic on port 80
+- **Auto Scaling Group** — Scales from 1 to 10 instances based on CPU utilization
+- **GitHub Actions** — CI/CD pipeline for automated builds and tests
+
 
 ## API Endpoints
  

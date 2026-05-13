@@ -470,15 +470,7 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // ─── Product Icons ───
-        const icons = ['📚', '👕', '🎒', '☕', '🖊️', '💻', '🧢', '🎓', '📓', '🏀'];
-        function getIcon(name) {
-            let hash = 0;
-            for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-            return icons[Math.abs(hash) % icons.length];
-        }
-
-        // ─── Load Products ───
+        // load products
         async function loadProducts() {
             try {
                 const res = await fetch(PRODUCT_API);
@@ -496,7 +488,6 @@
 
                 grid.innerHTML = products.map(p => `
                     <div class="product-card">
-                        <div class="product-icon">${getIcon(p.name)}</div>
                         <h3>${escapeHtml(p.name)}</h3>
                         <div class="price">$${Number(p.price).toFixed(2)}</div>
                         <div class="order-row">
@@ -504,6 +495,7 @@
                             <button class="btn btn-accent" onclick="placeOrder(${p.id}, '${escapeHtml(p.name)}')">
                                 Order
                             </button>
+                            <button class="btn btn-outline" onclick="deleteProduct(${p.id}, '${escapeHtml(p.name)}')" style="color:var(--danger);border-color:var(--danger);font-size:0.78rem;padding:0.3rem 0.6rem;">✕</button>
                         </div>
                     </div>
                 `).join('');
@@ -516,7 +508,7 @@
             }
         }
 
-        // ─── Add Product ───
+        //add product
         document.getElementById('addProductBtn').addEventListener('click', async () => {
             const name = document.getElementById('productName').value.trim();
             const price = parseFloat(document.getElementById('productPrice').value);
@@ -551,7 +543,7 @@
             }
         });
 
-        // ─── Place Order ───
+        // place order
         async function placeOrder(productId, productName) {
             const qtyInput = document.getElementById(`qty-${productId}`);
             const quantity = parseInt(qtyInput.value);
@@ -578,7 +570,7 @@
             }
         }
 
-        // ─── Load Orders ───
+        // load orders
         async function loadOrders() {
             try {
                 const res = await fetch(ORDER_API);
@@ -651,9 +643,9 @@
             }
         }
 
-        // ─── Utility ───
-        
-        // ─── Delete Order ───
+        // utlities 
+
+        // delete order
         async function deleteOrder(orderId) {
             if (!confirm('Delete this order?')) return;
             try {
@@ -663,6 +655,19 @@
                 loadOrders();
             } catch (err) {
                 showToast('Error deleting order.', true);
+            }
+        }
+
+        // delete product
+        async function deleteProduct(productId, productName) {
+            if (!confirm(`Delete "${productName}" from the store?`)) return;
+            try {
+                const res = await fetch(`${PRODUCT_API}/${productId}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                showToast(`"${productName}" deleted!`);
+                loadProducts();
+            } catch (err) {
+                showToast('Error deleting product.', true);
             }
         }
 

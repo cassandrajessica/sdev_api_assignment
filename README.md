@@ -43,7 +43,7 @@ POST and DELETE requests require an `x-api-key` header. GET requests are public.
 - **Runtime:** Node.js with Express
 - **Database:** PostgreSQL on AWS RDS
 - **Containerization:** Docker
-- **Cloud:** AWS (EC2, RDS, ALB, Lambda, VPC)
+- **Cloud:** AWS (EC2, RDS, ALB, Lambda)
 - **CI/CD:** GitHub Actions
 - **Frontend:** HTML, CSS, JavaScript
 

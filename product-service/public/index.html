@@ -624,6 +624,7 @@
                                 <th>Qty</th>
                                 <th>Total</th>
                                 <th>Date</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -635,6 +636,7 @@
                                     <td>${o.quantity}</td>
                                     <td class="total-cell">$${Number(o.total).toFixed(2)}</td>
                                     <td>${new Date(o.created_at).toLocaleDateString()}</td>
+                                    <td><button class="btn btn-outline" onclick="deleteOrder(${o.id})" style="color:var(--danger);border-color:var(--danger);font-size:0.78rem;padding:0.3rem 0.8rem;">Delete</button></td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -650,6 +652,20 @@
         }
 
         // ─── Utility ───
+        
+        // ─── Delete Order ───
+        async function deleteOrder(orderId) {
+            if (!confirm('Delete this order?')) return;
+            try {
+                const res = await fetch(`${ORDER_API}/${orderId}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Delete failed');
+                showToast('Order deleted!');
+                loadOrders();
+            } catch (err) {
+                showToast('Error deleting order.', true);
+            }
+        }
+
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.textContent = str;

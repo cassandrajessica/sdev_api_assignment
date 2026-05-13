@@ -88,6 +88,45 @@ app.get('/products/:id', async (req, res) => {
     }
 })
 
+// Proxy order requests to order-service
+const ORDER_SERVICE_URL = process.env.ORDER_SERVICE_URL || 'http://localhost:3002';
+
+app.get('/orders', async (req, res) => {
+    try {
+        const response = await fetch(`${ORDER_SERVICE_URL}/orders`);
+        const data = await response.json();
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ error: 'Order service unavailable' });
+    }
+});
+
+app.post('/orders', async (req, res) => {
+    try {
+        const response = await fetch(`${ORDER_SERVICE_URL}/orders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(req.body)
+        });
+        const data = await response.json();
+        res.status(response.status).json(data);
+    } catch (err) {
+        res.status(500).json({ error: 'Order service unavailable' });
+    }
+});
+
+app.delete('/orders/:id', async (req, res) => {
+    try {
+        const response = await fetch(`${ORDER_SERVICE_URL}/orders/${req.params.id}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+        res.status(response.status).json(data);
+    } catch (err) {
+        res.status(500).json({ error: 'Order service unavailable' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`);
 })

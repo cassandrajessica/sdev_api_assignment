@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Store Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #f5f0eb;
+            --surface: #ffffff;
+            --primary: #1a3a2a;
+            --accent: #d4a373;
+            --text: #2c2c2c;
+            --text-light: #6b6b6b;
+            --border: #e0d8cf;
+            --success: #2d6a4f;
+            --danger: #c1121f;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        header {
+            background: var(--primary);
+            color: #fff;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            letter-spacing: 0.5px;
+        }
+
+        header .badge {
+            background: var(--accent);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ── Navigation Tabs ── */
+        .tabs {
+            display: flex;
+            gap: 0;
+            background: var(--surface);
+            border-bottom: 2px solid var(--border);
+            padding: 0 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .tab:hover { color: var(--text); }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ── Main Layout ── */
+        main {
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ── Section Title ── */
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Product Grid ── */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.2s, transform 0.15s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .product-card .product-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .product-card .price {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .product-card .order-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .product-card .qty-input {
+            width: 60px;
+            padding: 0.45rem 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            padding: 0.5rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover { background: #254f3a; }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--primary);
+        }
+        .btn-accent:hover { background: #c4904f; }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { border-color: var(--primary); }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ── Forms ── */
+        .form-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-light);
+        }
+
+        .form-group input {
+            padding: 0.55rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background: #fff;
+            transition: border-color 0.15s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ── Orders Table ── */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .orders-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .orders-table th:first-child { border-radius: 8px 0 0 0; }
+        .orders-table th:last-child { border-radius: 0 8px 0 0; }
+
+        .orders-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .orders-table tr:hover td { background: #faf8f5; }
+
+        .orders-table .total-cell {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        /* ── Toast Notifications ── */
+        .toast-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.85rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+            max-width: 340px;
+        }
+
+        .toast.error { background: var(--danger); }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            to { transform: translateY(-10px); opacity: 0; }
+        }
+
+        /* ── Empty State ── */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+        }
+
+        .empty-state .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ── Loading Spinner ── */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Stats Bar ── */
+        .stats-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .stat-card .stat-value {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-top: 0.25rem;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            header { flex-direction: column; gap: 0.5rem; text-align: center; }
+            .tabs { padding: 0 1rem; overflow-x: auto; }
+            .tab { padding: 0.8rem 1rem; font-size: 0.82rem; white-space: nowrap; }
+            .form-row { flex-direction: column; }
+            main { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏫 Campus Store Online</h1>
+        <span class="badge">Cloud Native</span>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" data-page="products">Products</div>
+        <div class="tab" data-page="orders">Orders</div>
+    </div>
+
+    <main>
+        <!-- ── Products Page ── -->
+        <div id="products" class="page active">
+            <h2 class="section-title">Add a Product</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="productName" placeholder="e.g. Campus Hoodie">
+                </div>
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" id="productPrice" placeholder="29.99" min="0" step="0.01">
+                </div>
+                <button class="btn btn-primary" id="addProductBtn">Add Product</button>
+            </div>
+
+            <h2 class="section-title">Store Catalog</h2>
+            <div id="productGrid" class="product-grid">
+                <div class="empty-state">
+                    <div class="icon">📦</div>
+                    <p>Loading products...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Orders Page ── -->
+        <div id="orders" class="page">
+            <div class="stats-bar" id="orderStats"></div>
+
+            <h2 class="section-title">Order History</h2>
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div id="ordersTable">
+                    <div class="empty-state">
+                        <div class="icon">🛒</div>
+                        <p>Loading orders...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ─── Configuration ───
+        // If both services run on the same host, use relative URLs.
+        // If order-service is on a different host/port, update ORDER_API below.
+        const PRODUCT_API = '/products';
+        const ORDER_API_BASE = window.location.hostname === 'localhost'
+            ? 'http://localhost:3002'
+            : ''; // Update this to your order-service URL when deployed
+        const ORDER_API = ORDER_API_BASE + '/orders';
+
+        // ─── Tab Navigation ───
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.page).classList.add('active');
+
+                if (tab.dataset.page === 'orders') loadOrders();
+            });
+        });
+
+        // ─── Toast Notifications ───
+        function showToast(message, isError = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ─── Product Icons ───
+        const icons = ['📚', '👕', '🎒', '☕', '🖊️', '💻', '🧢', '🎓', '📓', '🏀'];
+        function getIcon(name) {
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+            return icons[Math.abs(hash) % icons.length];
+        }
+
+        // ─── Load Products ───
+        async function loadProducts() {
+            try {
+                const res = await fetch(PRODUCT_API);
+                const products = await res.json();
+                const grid = document.getElementById('productGrid');
+
+                if (products.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <div class="icon">📦</div>
+                            <p>No products yet. Add one above!</p>
+                        </div>`;
+                    return;
+                }
+
+                grid.innerHTML = products.map(p => `
+                    <div class="product-card">
+                        <div class="product-icon">${getIcon(p.name)}</div>
+                        <h3>${escapeHtml(p.name)}</h3>
+                        <div class="price">$${Number(p.price).toFixed(2)}</div>
+                        <div class="order-row">
+                            <input type="number" class="qty-input" id="qty-${p.id}" value="1" min="1" max="99">
+                            <button class="btn btn-accent" onclick="placeOrder(${p.id}, '${escapeHtml(p.name)}')">
+                                Order
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                document.getElementById('productGrid').innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="icon">⚠️</div>
+                        <p>Could not load products. Is the server running?</p>
+                    </div>`;
+            }
+        }
+
+        // ─── Add Product ───
+        document.getElementById('addProductBtn').addEventListener('click', async () => {
+            const name = document.getElementById('productName').value.trim();
+            const price = parseFloat(document.getElementById('productPrice').value);
+
+            if (!name || isNaN(price) || price <= 0) {
+                showToast('Please enter a valid name and price.', true);
+                return;
+            }
+
+            const btn = document.getElementById('addProductBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>';
+
+            try {
+                const res = await fetch(PRODUCT_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, price })
+                });
+
+                if (!res.ok) throw new Error('Failed to add product');
+
+                showToast(`"${name}" added to the store!`);
+                document.getElementById('productName').value = '';
+                document.getElementById('productPrice').value = '';
+                loadProducts();
+            } catch (err) {
+                showToast('Error adding product.', true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Add Product';
+            }
+        });
+
+        // ─── Place Order ───
+        async function placeOrder(productId, productName) {
+            const qtyInput = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(qtyInput.value);
+
+            if (isNaN(quantity) || quantity < 1) {
+                showToast('Enter a valid quantity.', true);
+                return;
+            }
+
+            try {
+                const res = await fetch(ORDER_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product_id: productId, quantity })
+                });
+
+                if (!res.ok) throw new Error('Order failed');
+                const order = await res.json();
+
+                showToast(`Order placed! ${quantity}x ${productName} — $${Number(order.total).toFixed(2)}`);
+                qtyInput.value = 1;
+            } catch (err) {
+                showToast('Error placing order. Check order service connection.', true);
+            }
+        }
+
+        // ─── Load Orders ───
+        async function loadOrders() {
+            try {
+                const res = await fetch(ORDER_API);
+                const orders = await res.json();
+
+                // Stats
+                const statsEl = document.getElementById('orderStats');
+                const totalRevenue = orders.reduce((sum, o) => sum + Number(o.total), 0);
+                const totalItems = orders.reduce((sum, o) => sum + o.quantity, 0);
+                statsEl.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-label">Total Orders</div>
+                        <div class="stat-value">${orders.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Items Sold</div>
+                        <div class="stat-value">${totalItems}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Revenue</div>
+                        <div class="stat-value">$${totalRevenue.toFixed(2)}</div>
+                    </div>
+                `;
+
+                // Table
+                const tableEl = document.getElementById('ordersTable');
+                if (orders.length === 0) {
+                    tableEl.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">🛒</div>
+                            <p>No orders yet. Go place one!</p>
+                        </div>`;
+                    return;
+                }
+
+                tableEl.innerHTML = `
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${orders.map(o => `
+                                <tr>
+                                    <td>#${o.id}</td>
+                                    <td>${escapeHtml(o.product_name)}</td>
+                                    <td>$${Number(o.product_price).toFixed(2)}</td>
+                                    <td>${o.quantity}</td>
+                                    <td class="total-cell">$${Number(o.total).toFixed(2)}</td>
+                                    <td>${new Date(o.created_at).toLocaleDateString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (err) {
+                document.getElementById('ordersTable').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">⚠️</div>
+                        <p>Could not load orders. Is the order service running?</p>
+                    </div>`;
+            }
+        }
+
+        // ─── Utility ───
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ─── Init ───
+        loadProducts();
+    </script>
+</body>
+</html>

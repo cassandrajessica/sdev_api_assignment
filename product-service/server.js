@@ -1,12 +1,27 @@
 import express from 'express';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
+
+// CORS too allow requests from other origins
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    next();
+});
+
+// serve frontend static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')));
 
 // connecting db
 const pool = new Pool({
@@ -61,7 +76,7 @@ app.get('/products', async (req, res) => {
 });
 
 // GET SINGLE PRODUCT 
-app.get('products/:id', async (req, res) => {
+app.get('/products/:id', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM products WHERE id = $1', [req.params.id]);
         if(result.rows.length === 0) {
